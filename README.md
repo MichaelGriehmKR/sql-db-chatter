@@ -1,4 +1,4 @@
-# database-chatter
+# sql-db-chatter
 
 ## Install Nuget Package
 
