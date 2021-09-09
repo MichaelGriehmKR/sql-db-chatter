@@ -1,0 +1,9 @@
+# Build Directories
+bin/
+obj/
+
+# VS Code Config Directory
+.vscode/
+
+# Log Files
+**/*.log
