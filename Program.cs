@@ -9,14 +9,14 @@ namespace DatabaseChatter
     {
         static void Main(string[] args)
         {
-            const int minutesToRun = 10;
-            const int millisecondsBetweenChatter = 300;
+            const int minutesToRun = 8;
+            const int millisecondsBetweenChatter = 500;
 
             DateTime endTime = DateTime.UtcNow.AddMinutes(minutesToRun);
         
             Console.WriteLine($"Starting chatter with the database for {minutesToRun} minutes at {DateTime.UtcNow} (UTC), the app will attempt to insert a record every {millisecondsBetweenChatter} milliseconds.");
             
-            Log.Logger = new LoggerConfiguration().WriteTo.File("database-chatter.log").CreateLogger();
+            Log.Logger = new LoggerConfiguration().WriteTo.File("sql-db-chatter.log").CreateLogger();
 
             Log.Information("The Database Chatter application has started and the Logging has been configured.");
 
@@ -30,7 +30,7 @@ namespace DatabaseChatter
 
             var lastTestingRun = GetLastTestingRun();
 
-            var thisTestingRun = lastTestingRun++;
+            var thisTestingRun = lastTestingRun + 1;
 
             Log.Information($"TestingRun {thisTestingRun} is beginning.");
 
@@ -44,7 +44,7 @@ namespace DatabaseChatter
             get
             {
                 SqlConnectionStringBuilder connBuilder = new SqlConnectionStringBuilder();  
-                connBuilder.DataSource = "<azure-sql-server-name>.database.windows.net";  
+                connBuilder.DataSource = "";  
                 connBuilder.UserID = "";  
                 connBuilder.Password = "";  
                 connBuilder.InitialCatalog = ""; 
@@ -59,14 +59,15 @@ namespace DatabaseChatter
             {  
                 connection.Open();  
                 
-                string command = "if not exists (select * from sysobjects where name='Testing' and xtype='U') " +
-                                    "create table DatabaseChatter ( " + 
+                string command = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE Name='DatabaseChatter' AND XType='U') " +
+                                 "BEGIN " + 
+                                    "CREATE TABLE DatabaseChatter ( " + 
                                         "Id int IDENTITY(1,1) PRIMARY KEY, " + 
                                         "InsertTimestamp DATETIME NOT NULL DEFAULT GETUTCDATE(), " + 
                                         "TestingRun INT NOT NULL, " + 
                                         "InsertAttempt INT NOT NULL " +
                                     ") " + 
-                                "go";
+                                "END ";
 
                 using(SqlCommand sqlCmd = new SqlCommand(command, connection)) 
                 {  
@@ -77,7 +78,7 @@ namespace DatabaseChatter
 
         private static int GetLastTestingRun()
         {
-            int? lastTestingRun = null;
+            int lastTestingRun = 0;
 
             using(SqlConnection connection = new SqlConnection(ConnectionString)) 
             {  
@@ -85,16 +86,16 @@ namespace DatabaseChatter
                 
                 using(SqlCommand sqlCmd = new SqlCommand("SELECT MAX(TestingRun) FROM [dbo].[DatabaseChatter]", connection)) 
                 {  
-                    lastTestingRun = (int?)sqlCmd.ExecuteScalar();
+                    var result = sqlCmd.ExecuteScalar();
+
+                    if (result != DBNull.Value)
+                    {
+                        lastTestingRun = (int)sqlCmd.ExecuteScalar();
+                    }
                 }  
             }
 
-            if (!lastTestingRun.HasValue)
-            {
-                lastTestingRun = 0;
-            }
-
-            return lastTestingRun.Value;
+            return lastTestingRun;
         }
 
         private static ChatterResults RunChatter(int thisTestingRun, DateTime endTime, int millisecondsBetweenChatter)

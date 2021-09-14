@@ -1,15 +1,19 @@
 # sql-db-chatter
 
-## Install Nuget Package
+## Install the .NET Core SDK
 
-First, install the VS Code Extension:  'Nuget Package Manager'
+Download and install the .NET Code SDL from [here](https://dotnet.microsoft.com/download).
 
-Second, use ctrl + shift + p to pull up command pallet and use Nuget Package Manager: Add Package to install:
+## Install VS Code Extensions
 
-- System.Data.SqlClient
-- Serilog.Sinks.File
+First, install the following VS Code Extensions:  
 
-Third, run the following command
+- Nuget Package Manager
+- C#
+
+## Restore Nuget Packages
+
+Open the terminal at the root of this directory and then run the following command:
 
     dotnet restore
 
