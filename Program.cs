@@ -9,12 +9,12 @@ namespace DatabaseChatter
     {
         static void Main(string[] args)
         {
-            const int minutesToRun = 8;
+            const int minutesToRun = 15;
             const int millisecondsBetweenChatter = 500;
 
             DateTime endTime = DateTime.UtcNow.AddMinutes(minutesToRun);
         
-            Console.WriteLine($"Starting chatter with the database for {minutesToRun} minutes at {DateTime.UtcNow} (UTC), the app will attempt to insert a record every {millisecondsBetweenChatter} milliseconds.");
+            Console.WriteLine($"Starting the chatter application to run for {minutesToRun} minutes at {DateTime.UtcNow} (UTC), the app will attempt to insert a record every {millisecondsBetweenChatter} milliseconds.");
             
             Log.Logger = new LoggerConfiguration().WriteTo.File("sql-db-chatter.log").CreateLogger();
 
@@ -32,7 +32,7 @@ namespace DatabaseChatter
 
             var thisTestingRun = lastTestingRun + 1;
 
-            Log.Information($"TestingRun {thisTestingRun} is beginning.");
+            Log.Information($"TestingRun {thisTestingRun} is beginning chatter with the database and will run for {minutesToRun} minutes at {DateTime.UtcNow} (UTC), the app will attempt to insert a record every {millisecondsBetweenChatter} milliseconds.");
 
             var chatterResults = RunChatter(thisTestingRun, endTime, millisecondsBetweenChatter);
 
@@ -44,10 +44,10 @@ namespace DatabaseChatter
             get
             {
                 SqlConnectionStringBuilder connBuilder = new SqlConnectionStringBuilder();  
-                connBuilder.DataSource = "";  
-                connBuilder.UserID = "";  
-                connBuilder.Password = "";  
-                connBuilder.InitialCatalog = ""; 
+                connBuilder.DataSource = "cismonsqlnp.database.windows.net";  
+                connBuilder.UserID = "cisadmin";  
+                connBuilder.Password = "xkWEHB5Y0qqV4iqiO@FLREp4WPFI8@";  
+                connBuilder.InitialCatalog = "MonitoringNP"; 
 
                 return connBuilder.ConnectionString;
             }
@@ -100,11 +100,13 @@ namespace DatabaseChatter
 
         private static ChatterResults RunChatter(int thisTestingRun, DateTime endTime, int millisecondsBetweenChatter)
         {
-            int insertCount = 1;
+            int insertCount = 0;
             int errorCount = 0;
 
             while (DateTime.UtcNow < endTime)
             {
+                insertCount++;
+
                 try 
                 {  
                     using(SqlConnection connection = new SqlConnection(ConnectionString)) 
@@ -130,8 +132,6 @@ namespace DatabaseChatter
 
                     Console.WriteLine($"[ERROR] InsertAttempt {insertCount} encounter the following error: {ex.Message}");
                 }
-
-                insertCount++;
 
                 Thread.Sleep(millisecondsBetweenChatter);
             }

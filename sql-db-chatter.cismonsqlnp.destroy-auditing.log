@@ -1,0 +1,6 @@
+2021-09-17 17:52:48.157 +00:00 [INF] The Database Chatter application has started and the Logging has been configured.
+2021-09-17 17:52:48.168 +00:00 [INF] Ensuring databsase table exists.
+2021-09-17 17:52:48.881 +00:00 [INF] Completed ensuring databsase table exists.
+2021-09-17 17:52:48.881 +00:00 [INF] Getting last run id.
+2021-09-17 17:52:48.942 +00:00 [INF] TestingRun 3 is beginning chatter with the database and will run for 15 minutes at 9/17/2021 5:52:48 PM (UTC), the app will attempt to insert a record every 500 milliseconds.
+2021-09-17 18:07:48.231 +00:00 [INF] TestingRun 3 ended at 9/17/2021 6:07:48 PM (UTC) after attempting to insert 1735 records with 0 errors.

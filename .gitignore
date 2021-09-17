@@ -4,6 +4,3 @@ obj/
 
 # VS Code Config Directory
 .vscode/
-
-# Log Files
-**/*.log

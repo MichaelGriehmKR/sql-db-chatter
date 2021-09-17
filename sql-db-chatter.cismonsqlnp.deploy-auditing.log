@@ -1,0 +1,8 @@
+2021-09-15 19:52:30.840 +00:00 [INF] The Database Chatter application has started and the Logging has been configured.
+2021-09-15 19:52:30.849 +00:00 [INF] Ensuring databsase table exists.
+2021-09-15 19:53:59.540 +00:00 [INF] The Database Chatter application has started and the Logging has been configured.
+2021-09-15 19:53:59.548 +00:00 [INF] Ensuring databsase table exists.
+2021-09-15 19:54:14.372 +00:00 [INF] Completed ensuring databsase table exists.
+2021-09-15 19:54:14.372 +00:00 [INF] Getting last run id.
+2021-09-15 19:54:14.441 +00:00 [INF] TestingRun 2 is beginning.
+2021-09-15 20:03:59.649 +00:00 [INF] TestingRun 2 ended at 9/15/2021 8:03:59 PM (UTC) after attempting to insert 1120 records with 0 errors.
